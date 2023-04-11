@@ -1,7 +1,5 @@
 import datetime
-
 import requests
-
 import login
 
 Proxy = {
@@ -17,10 +15,18 @@ def getGrade():
     today = datetime.datetime.now()  # 获取今天时间
     start_time = int(round(today.timestamp() * 1000))
     print("===获取成绩===")
+    year=input("输入起始年份(如2022-2023输入2022):")
+    term=input("输出第几学期1/2(不填写就是全部):")
+    if term =="":
+        xqm=""
+    elif term == "1":
+        xqm="3"
+    else:
+        xqm="12"
     url="https://jwxt.stbu.edu.cn/cjcx/cjcx_cxXsgrcj.html?doType=query"
     data={
-    "xnm": "2021", #起始年份
-    "xqm": "", # 第一学期 值3 第二学期值 12 全部 不填
+    "xnm": year, #起始年份
+    "xqm": xqm, # 第一学期 值3 第二学期值 12 全部 不填
     "_search": "false",
     "nd": start_time,
     "queryModel.showCount": "15",
@@ -38,6 +44,7 @@ def getGrade():
     response=requests.post(url=url,data=data,headers=headers,proxies=Proxy)
     js=response.json()
     courseList=js["items"]
+    print(courseList)
     kcCourse=0
     kcCount=0
     ksCourse=0
